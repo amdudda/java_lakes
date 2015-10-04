@@ -36,4 +36,14 @@ public class Lake {
         // adds a time to the times arraylist
         this.times.add(time);
     }
+
+    protected Double getFastestTime(){
+        // returns the fastest time for a lake
+        if (this.times.isEmpty()) return 0d;  // in the unlikely event no times are stored
+        Double minTime = 0d;
+        for (Double t:this.times) {
+            if (t<minTime) minTime = t;
+        } // end for each
+        return minTime;
+    } //end getFastestTime
 }
