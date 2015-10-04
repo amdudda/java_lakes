@@ -91,8 +91,7 @@ public class Lakes {
             } // end while
 
             //Append data to relevant lake
-            //comment out for now to test data reading
-            // putData(lt, lake, runtime);
+            putData(lt, lake, runtime);
 
             // ask the user if they want to provide more data
             System.out.println("Would you like to add another running time (y/n)?");
@@ -113,7 +112,6 @@ public class Lakes {
         BufferedReader br = new BufferedReader(fr);
         String lake;
         Double runtime;
-        boolean lakefound = false;
 
         // read in our data and add it to the hashmap
         String line = br.readLine();
@@ -122,20 +120,7 @@ public class Lakes {
             try {
                 lake = line.substring(0, line.indexOf(","));
                 runtime = Double.parseDouble(line.substring(line.indexOf(",") + 1));
-                // check if the lake is already there.  if so, add the new runtime to its times array
-                for (Lake lk : lt) {
-                    if (lk.getName().equals(lake)) {
-                        lakefound = true;  // we found the lake
-                        lk.addTime(runtime);  // so add the runtime to that lake's list of runtimes
-                        break;  // get out of the for each loop
-                    } // end if
-                }  // end for-each
-                // if the lake is not found, create it and add it to the array of lakes
-                if (!lakefound) {
-                    Lake curlake = new Lake(lake,runtime);
-                    lt.add(curlake);
-                } // end if
-
+                putData(lt,lake,runtime);
             } catch (StringIndexOutOfBoundsException sioobe) {
                 System.out.println("You seem to have forgotten to separate a location-time pair with a comma.");
                 System.out.println(sioobe.toString());
@@ -148,7 +133,6 @@ public class Lakes {
             } // end try-catch
 
             // set lakefound to be false again and move to next line of file
-            lakefound = false;
             line = br.readLine();
         } // end while loop
 
@@ -157,26 +141,26 @@ public class Lakes {
         fr.close();
     } // end fetchData
 
-    /* not needed
+
     private static void putData(ArrayList<Lake> lt, String lake, Double runtime) {
-        /*
-            Append data to relevant lake
-            see final comment at http://stackoverflow.com/questions/3626752/key-existence-check-in-hashmap
-            an easy way to check if a HashMap key is already there is to see if its value is null.
-        */
-    /*
-        if (lt.get(lake) == null) {
-            //no data associated with lake, put key and value into hashmap
-            ArrayList<Double> newdata = new ArrayList<Double>();
-            newdata.add(runtime);
-            lt.put(lake, newdata);
-        } else {
-            // Append the value to the arraylist already in the hashmap
-            // in pseudocode English, "get the current lake's data and add the new runtime to it"
-            lt.get(lake).add(runtime);
+        // Append data to relevant lake
+        // variable to track whether the lake name is found in the array of lakes
+        boolean lakefound = false;
+
+        // check if the lake is already there.  if so, add the new runtime to its times array
+        for (Lake lk : lt) {
+            if (lk.getName().equals(lake)) {
+                lakefound = true;  // we found the lake
+                lk.addTime(runtime);  // so add the runtime to that lake's list of runtimes
+                break;  // get out of the for each loop
+            } // end if
+        }  // end for-each
+        // if the lake is not found, create it and add it to the array of lakes
+        if (!lakefound) {
+            Lake curlake = new Lake(lake,runtime);
+            lt.add(curlake);
         } // end if
     } // end putData
-    */
 
     private static String reportBestTimes(ArrayList<Lake> lt) {
         // reads in hashmap lt, returns a string with each lake's best time.

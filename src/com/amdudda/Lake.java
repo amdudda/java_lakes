@@ -37,7 +37,7 @@ public class Lake {
         this.times.add(time);
     }
 
-    protected Double getFastestTime(){
+    protected Double getFastestTime() {
         // returns the fastest time for a lake
         if (this.times.isEmpty()) return 0d;  // in the unlikely event no times are stored
         Double minTime = this.times.get(0);
