@@ -121,7 +121,10 @@ public class Lakes {
             try {
                 lake = line.substring(0, line.indexOf(","));
                 runtime = Double.parseDouble(line.substring(line.indexOf(",") + 1));
-                putData(lt, lake, runtime);
+                Lake curlake = new Lake();  // TODO: except this creates multiple lakes w/ same name.
+                curlake.setName(lake);
+                curlake.addTime(runtime);
+                // do I need this? putData(lt, lake, runtime);
             }
             catch (StringIndexOutOfBoundsException sioobe) {
                 System.out.println("You seem to have forgotten to separate a location-time pair with a comma.");

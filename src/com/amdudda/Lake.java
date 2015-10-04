@@ -26,4 +26,9 @@ public class Lake {
     public ArrayList<Double> getTimes() {
         return times;
     }
+
+    public void addTime(Double time) {
+        // adds a time to the times arraylist
+        this.times.add(time);
+    }
 }
