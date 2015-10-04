@@ -40,7 +40,7 @@ public class Lake {
     protected Double getFastestTime(){
         // returns the fastest time for a lake
         if (this.times.isEmpty()) return 0d;  // in the unlikely event no times are stored
-        Double minTime = 0d;
+        Double minTime = this.times.get(0);
         for (Double t:this.times) {
             if (t<minTime) minTime = t;
         } // end for each

@@ -181,16 +181,9 @@ public class Lakes {
     private static String reportBestTimes(ArrayList<Lake> lt) {
         // reads in hashmap lt, returns a string with each lake's best time.
         String best_times = "";
-        ArrayList<Double> times;
         // then find our best times and append them to the string reporting the best times.
         for (Lake k : lt) {
-            // get the list of run times for the lake
-            times = k.getTimes();
-            double minTime = times.get(0);
-            for (Double t : times) {
-                minTime = Math.min(minTime, t);
-            }
-            best_times += String.format("%s: %.2f \n", titleCase(k.getName()), minTime);
+            best_times += String.format("%s: %.2f \n", titleCase(k.getName()), k.getFastestTime());
         } // end for loop
         return best_times;
     } // end reportBestTimes
