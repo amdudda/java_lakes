@@ -46,4 +46,20 @@ public class Lake {
         } // end for each
         return minTime;
     } //end getFastestTime
+
+    protected String titleCase() {
+        // returns a lake's name in title case
+        // strip out excess white space
+        String lk_name = this.name;
+        // capitalize the first letter
+        lk_name = lk_name.substring(0, 1).toUpperCase() + lk_name.substring(1);
+        // loop: look for spaces and capitalize following letters.
+        // We've already trimmed the string, so we don't need to worry about there being spaces at the end of the string.
+        for (int i = 0; i < lk_name.length(); i++) {
+            if (lk_name.substring(i, i + 1).equals(" ")) {
+                lk_name = lk_name.substring(0, i + 1) + lk_name.substring(i + 1, i + 2).toUpperCase() + lk_name.substring(i + 2);
+            } // end if
+        } // end for
+        return lk_name;
+    } // end titleCase
 }

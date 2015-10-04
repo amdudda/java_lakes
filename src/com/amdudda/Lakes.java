@@ -71,16 +71,16 @@ public class Lakes {
         // collect user data
         System.out.println("OK, let's start entering your data!");
         while (newlake.equals("y")) {
-            // get the name of the lake - convert to lower case for data cleanup.
+            // get the name of the lake - convert to lower case & trim whitespace for data cleanup.
             System.out.println("Which lake would you like to enter a time for?");
-            lake = s.nextLine().toLowerCase();
+            lake = s.nextLine().toLowerCase().trim();
 
             // get the time for the run in question
             while (true) {
                 // DONE: incorporate graceful error trapping for user input
                 try {
                     System.out.println(String.format("How long did it take you to run around %s for this run?",
-                            titleCase(lake)));
+                            lake));
                     runtime = t.nextDouble();
                     break;
                 } catch (Exception e) {
@@ -167,25 +167,9 @@ public class Lakes {
         String best_times = "";
         // then find our best times and append them to the string reporting the best times.
         for (Lake k : lt) {
-            best_times += String.format("%s: %.2f \n", titleCase(k.getName()), k.getFastestTime());
+            best_times += String.format("%s: %.2f \n", k.titleCase(), k.getFastestTime());
         } // end for loop
         return best_times;
     } // end reportBestTimes
-
-    private static String titleCase(String lk_name) {
-        // accepts a string and convertes it to title case
-        // strip out excess white space
-        lk_name = lk_name.trim();
-        // capitalize the first letter
-        lk_name = lk_name.substring(0, 1).toUpperCase() + lk_name.substring(1);
-        // loop: look for spaces and capitalize following letters.
-        // We've already trimmed the string, so we don't need to worry about there being spaces at the end of the string.
-        for (int i = 0; i < lk_name.length(); i++) {
-            if (lk_name.substring(i, i + 1).equals(" ")) {
-                lk_name = lk_name.substring(0, i + 1) + lk_name.substring(i + 1, i + 2).toUpperCase() + lk_name.substring(i + 2);
-            } // end if
-        } // end for
-        return lk_name;
-    } // end titleCase
 
 } // end Lakes
