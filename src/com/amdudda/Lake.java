@@ -12,7 +12,12 @@ public class Lake {
     private String name;
     private ArrayList<Double> times;
 
-    // TODO: Decide whether constructor is needed for this implementation
+    // Constructor
+    public Lake(String lkName,Double firstTime) {
+        this.name = lkName;
+        this.times = new ArrayList<Double>();
+        this.times.add(firstTime);
+    } // end constructor
 
     // getter for name and times and setter for name
     public String getName() {

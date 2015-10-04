@@ -125,16 +125,14 @@ public class Lakes {
                 // check if the lake is already there.  if so, add the new runtime to its times array
                 for (Lake lk : lt) {
                     if (lk.getName().equals(lake)) {
-                        lakefound = true;
-                        lk.addTime(runtime);
+                        lakefound = true;  // we found the lake
+                        lk.addTime(runtime);  // so add the runtime to that lake's list of runtimes
                         break;  // get out of the for each loop
                     } // end if
                 }  // end for-each
                 // if the lake is not found, create it and add it to the array of lakes
                 if (!lakefound) {
-                    Lake curlake = new Lake();
-                    curlake.setName(lake);
-                    curlake.addTime(runtime);
+                    Lake curlake = new Lake(lake,runtime);
                     lt.add(curlake);
                 } // end if
 
@@ -149,7 +147,8 @@ public class Lakes {
                 System.out.println("\nThe line causing this error was: " + line);
             } // end try-catch
 
-            // move to next line of file
+            // set lakefound to be false again and move to next line of file
+            lakefound = false;
             line = br.readLine();
         } // end while loop
 
