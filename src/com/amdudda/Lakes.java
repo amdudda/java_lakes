@@ -10,7 +10,7 @@ public class Lakes {
         // program to report running times.
         // store our data in a HashMap - the key is a lake name
         // and the value is an ArrayList of lap times.
-        Lake laketimes = new Lake();
+        ArrayList<Lake> laketimes = new ArrayList<Lake>();
 
         // explain the program and gather data
         System.out.println("This program processes times taken to run around lakes and returns your best times.");
@@ -19,8 +19,7 @@ public class Lakes {
         // get the data we'll be processing
         try {
             runProgram(laketimes);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // I *think* I've caught all the likely problems with my data, but let's put this here
             // so the program can gracefully report other errors, then merrily proceed to the report.
             System.out.println("Something broke!  Here's the program's error message, which may or may not be useful:");
@@ -34,7 +33,7 @@ public class Lakes {
 
     }// end main
 
-    private static void runProgram(Lake laketimes) throws IOException {
+    private static void runProgram(ArrayList<Lake> laketimes) throws IOException {
         // this is the heart of the program - gathers data so it can then be processed into a report
         // set up a scanner and intialize variable to store its input
         Scanner o = new Scanner(System.in);
@@ -62,7 +61,7 @@ public class Lakes {
         o.close();
     } // end runProgram
 
-    private static void collectData(Lake lt) {
+    private static void collectData(ArrayList<Lake> lt) {
         // later, we'll write a function that gathers this data.
         // initialize scanner and variables
         Scanner s = new Scanner(System.in), t = new Scanner(System.in);
@@ -81,7 +80,7 @@ public class Lakes {
                 // DONE: incorporate graceful error trapping for user input
                 try {
                     System.out.println(String.format("How long did it take you to run around %s for this run?",
-                        titleCase(lake)));
+                            titleCase(lake)));
                     runtime = t.nextDouble();
                     break;
                 } catch (Exception e) {
@@ -92,7 +91,8 @@ public class Lakes {
             } // end while
 
             //Append data to relevant lake
-            putData(lt, lake, runtime);
+            //comment out for now to test data reading
+            // putData(lt, lake, runtime);
 
             // ask the user if they want to provide more data
             System.out.println("Would you like to add another running time (y/n)?");
@@ -103,7 +103,7 @@ public class Lakes {
         t.close();
     }  // end collectData
 
-    private static void fetchData(Lake lt) throws IOException {
+    private static void fetchData(ArrayList<Lake> lt) throws IOException {
         // reads in data file instead of prompting for user input
         // data stored in data directory
         // initialize variables and set up file reader
@@ -113,6 +113,7 @@ public class Lakes {
         BufferedReader br = new BufferedReader(fr);
         String lake;
         Double runtime;
+        boolean lakefound = false;
 
         // read in our data and add it to the hashmap
         String line = br.readLine();
@@ -121,17 +122,27 @@ public class Lakes {
             try {
                 lake = line.substring(0, line.indexOf(","));
                 runtime = Double.parseDouble(line.substring(line.indexOf(",") + 1));
-                Lake curlake = new Lake();  // TODO: except this creates multiple lakes w/ same name.
-                curlake.setName(lake);
-                curlake.addTime(runtime);
-                // do I need this? putData(lt, lake, runtime);
-            }
-            catch (StringIndexOutOfBoundsException sioobe) {
+                // check if the lake is already there.  if so, add the new runtime to its times array
+                for (Lake lk : lt) {
+                    if (lk.getName().equals(lake)) {
+                        lakefound = true;
+                        lk.addTime(runtime);
+                        break;  // get out of the for each loop
+                    } // end if
+                }  // end for-each
+                // if the lake is not found, create it and add it to the array of lakes
+                if (!lakefound) {
+                    Lake curlake = new Lake();
+                    curlake.setName(lake);
+                    curlake.addTime(runtime);
+                    lt.add(curlake);
+                } // end if
+
+            } catch (StringIndexOutOfBoundsException sioobe) {
                 System.out.println("You seem to have forgotten to separate a location-time pair with a comma.");
                 System.out.println(sioobe.toString());
                 System.out.println("\nThe line causing this error was: " + line);
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 System.out.println("You tried to use text when the program was expecting a number, " +
                         "or you accidentally put two times on the same line.");
                 System.out.println(nfe.toString());
@@ -147,12 +158,14 @@ public class Lakes {
         fr.close();
     } // end fetchData
 
-    private static void putData(Lake lt, String lake, Double runtime) {
+    /* not needed
+    private static void putData(ArrayList<Lake> lt, String lake, Double runtime) {
         /*
             Append data to relevant lake
             see final comment at http://stackoverflow.com/questions/3626752/key-existence-check-in-hashmap
             an easy way to check if a HashMap key is already there is to see if its value is null.
         */
+    /*
         if (lt.get(lake) == null) {
             //no data associated with lake, put key and value into hashmap
             ArrayList<Double> newdata = new ArrayList<Double>();
@@ -164,35 +177,36 @@ public class Lakes {
             lt.get(lake).add(runtime);
         } // end if
     } // end putData
+    */
 
-    private static String reportBestTimes(Lake lt) {
+    private static String reportBestTimes(ArrayList<Lake> lt) {
         // reads in hashmap lt, returns a string with each lake's best time.
-        String best_times = "", capLake;
+        String best_times = "";
         ArrayList<Double> times;
-        // get the list of keys in the hashmap
         // then find our best times and append them to the string reporting the best times.
-        for (String k : lt.keySet()) {
-            times = lt.get(k);
+        for (Lake k : lt) {
+            // get the list of run times for the lake
+            times = k.getTimes();
             double minTime = times.get(0);
             for (Double t : times) {
                 minTime = Math.min(minTime, t);
             }
-            best_times += String.format("%s: %.2f \n", titleCase(k), minTime);
+            best_times += String.format("%s: %.2f \n", titleCase(k.getName()), minTime);
         } // end for loop
         return best_times;
     } // end reportBestTimes
 
-    private static String titleCase(String lk_name){
+    private static String titleCase(String lk_name) {
         // accepts a string and convertes it to title case
         // strip out excess white space
         lk_name = lk_name.trim();
         // capitalize the first letter
-        lk_name = lk_name.substring(0,1).toUpperCase() + lk_name.substring(1);
+        lk_name = lk_name.substring(0, 1).toUpperCase() + lk_name.substring(1);
         // loop: look for spaces and capitalize following letters.
         // We've already trimmed the string, so we don't need to worry about there being spaces at the end of the string.
-        for (int i=0; i<lk_name.length(); i++) {
-            if (lk_name.substring(i,i+1).equals(" ")) {
-                lk_name = lk_name.substring(0,i+1) + lk_name.substring(i+1,i+2).toUpperCase() + lk_name.substring(i+2);
+        for (int i = 0; i < lk_name.length(); i++) {
+            if (lk_name.substring(i, i + 1).equals(" ")) {
+                lk_name = lk_name.substring(0, i + 1) + lk_name.substring(i + 1, i + 2).toUpperCase() + lk_name.substring(i + 2);
             } // end if
         } // end for
         return lk_name;
