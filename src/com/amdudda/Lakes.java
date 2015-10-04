@@ -165,11 +165,27 @@ public class Lakes {
     private static String reportBestTimes(ArrayList<Lake> lt) {
         // reads in hashmap lt, returns a string with each lake's best time.
         String best_times = "";
+        // let's put the lakes in alphabetical order
+        sortLakes(lt);
         // then find our best times and append them to the string reporting the best times.
         for (Lake k : lt) {
             best_times += String.format("%s: %.2f \n", k.titleCase(), k.getFastestTime());
         } // end for loop
         return best_times;
     } // end reportBestTimes
+
+    private static void sortLakes(ArrayList<Lake> lt) {
+        // sorts the lakes alphabetically by their names
+        Lake tomove;
+        for (int i=0; i<lt.size(); i++) {
+            for (int j=i+1; j<lt.size();j++) {
+                if (lt.get(i).getName().compareTo(lt.get(j).getName()) > 0) {
+                    tomove = lt.get(i);
+                    lt.set(i,lt.get(j));
+                    lt.set(j,tomove);
+                } // end if
+            }  // end for j
+        } // end for i
+    }// end sortLakes
 
 } // end Lakes
