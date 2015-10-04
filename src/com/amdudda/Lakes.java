@@ -10,7 +10,7 @@ public class Lakes {
         // program to report running times.
         // store our data in a HashMap - the key is a lake name
         // and the value is an ArrayList of lap times.
-        HashMap<String, ArrayList<Double>> laketimes = new HashMap<String, ArrayList<Double>>();
+        Lake laketimes = new Lake();
 
         // explain the program and gather data
         System.out.println("This program processes times taken to run around lakes and returns your best times.");
@@ -34,7 +34,7 @@ public class Lakes {
 
     }// end main
 
-    private static void runProgram(HashMap<String, ArrayList<Double>> laketimes) throws IOException {
+    private static void runProgram(Lake laketimes) throws IOException {
         // this is the heart of the program - gathers data so it can then be processed into a report
         // set up a scanner and intialize variable to store its input
         Scanner o = new Scanner(System.in);
@@ -62,7 +62,7 @@ public class Lakes {
         o.close();
     } // end runProgram
 
-    private static void collectData(HashMap<String, ArrayList<Double>> lt) {
+    private static void collectData(Lake lt) {
         // later, we'll write a function that gathers this data.
         // initialize scanner and variables
         Scanner s = new Scanner(System.in), t = new Scanner(System.in);
@@ -103,7 +103,7 @@ public class Lakes {
         t.close();
     }  // end collectData
 
-    private static void     fetchData(HashMap<String, ArrayList<Double>> lt) throws IOException {
+    private static void fetchData(Lake lt) throws IOException {
         // reads in data file instead of prompting for user input
         // data stored in data directory
         // initialize variables and set up file reader
@@ -144,7 +144,7 @@ public class Lakes {
         fr.close();
     } // end fetchData
 
-    private static void putData(HashMap<String, ArrayList<Double>> lt, String lake, Double runtime) {
+    private static void putData(Lake lt, String lake, Double runtime) {
         /*
             Append data to relevant lake
             see final comment at http://stackoverflow.com/questions/3626752/key-existence-check-in-hashmap
@@ -162,7 +162,7 @@ public class Lakes {
         } // end if
     } // end putData
 
-    private static String reportBestTimes(HashMap<String, ArrayList<Double>> lt) {
+    private static String reportBestTimes(Lake lt) {
         // reads in hashmap lt, returns a string with each lake's best time.
         String best_times = "", capLake;
         ArrayList<Double> times;
