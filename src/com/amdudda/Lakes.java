@@ -27,7 +27,6 @@ public class Lakes {
         } // end try-catch
 
         // report the best times for each lake
-        System.out.println("\nThis is a list of your best times around each lake.");
         System.out.println(reportBestTimes(laketimes));
 
 
@@ -163,6 +162,7 @@ public class Lakes {
     } // end putData
 
     private static String reportBestTimes(ArrayList<Lake> lt) {
+        System.out.println("\nThis is a list of your best times around each lake.");
         // reads in hashmap lt, returns a string with each lake's best time.
         String best_times = "";
         // let's put the lakes in alphabetical order
