@@ -85,7 +85,7 @@ public class Lakes {
                 } catch (Exception e) {
                     System.out.println("That doesn't look like a number.  Please try again.");
                     // reset the scanner so it can accept fresh input
-                    t = new Scanner(System.in);
+                    t.nextLine();  // Margaret told me about this instead of instantiating it as a new scanner.
                 }  // end try-catch
             } // end while
 
